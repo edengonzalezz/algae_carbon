@@ -1,10 +1,10 @@
-# run_all_scenes.R
-# Process every PlanetScope GeoTIFF in a folder: crop to flux tower box,
-# mask to water, compute NDCI / RE10 / OC3, and save results.
+# Process every PlanetScope GeoTIFF in a folder
+# crop to flux tower box, mask to water, 
+# compute NDCI / RE10 / OC3, and save results
 
 library(terra)
 source("R/util2.R")   # compute_ps_indices_water()
-source("R/util3.R")   # make_tower_box(), mask_to_water(), process_scene(), and more 
+source("R/util3.R")   # make_tower_box(), mask_to_water(), process_scene(), and other 
 
 
 in_dir    <- "data/ps_scenes"         
@@ -27,7 +27,7 @@ for (path in scenes) {
   date <- scene_date(path)
   message("Processing ", date)
 
-  # tryCatch so one bad scene doesn't stop the whole run
+  # tryCatch so one bad scene doesn't stop all processing
   tryCatch({
     indices <- process_scene(path, water_mask, tower_lon, tower_lat, box_size)
 

@@ -1,11 +1,9 @@
-# R/helpers.R
-# Helper functions for processing PlanetScope scenes around the flux tower area
-
+# Functions for processing PlanetScope scenes around the flux tower
 
 library(terra)
 
-# Build the 350 x 350 m bounding box around the flux tower, in the raster's CRS.
-# The tower is NOT centered as to match the observed flux footprint (2010-2025).
+# Build the 350 x 350 m bounding box around the flux tower, in the raster's CRS
+# The tower is NOT centered as to match the observed flux footprint (2010-2025)
 
 make_tower_box <- function(r, lon, lat, L = 350) {
   pt_ll  <- vect(data.frame(x = lon, y = lat), geom = c("x", "y"), crs = "EPSG:4326")
@@ -16,7 +14,7 @@ make_tower_box <- function(r, lon, lat, L = 350) {
       xy$y - 0.25 * L, xy$y + 0.75 * L)
 }
 
-# Keep only water pixels (mask == 1). The mask is aligned to the scene grid first.
+# Keep only water pixels (mask == 1)
 mask_to_water <- function(r_box, water_mask) {
 
   wm <- project(water_mask, r_box, method = "near")
@@ -28,19 +26,30 @@ mask_to_water <- function(r_box, water_mask) {
   mask(r_box, wm, maskvalues = 0)
 }
 
-# Pull the date out of a Planet filename i.e. "20250701_191421_..." -> "2025-07-01"
+# Rename Planet tifs i.e. 20250701_191421_... -> 2025-07-01
 scene_date <- function(path) {
   d <- substr(basename(path), 1, 8)
   format(as.Date(d, "%Y%m%d"), "%Y-%m-%d")
 }
 
-# Full workflow for one scene. 1. read, 2. crop, 3. water mask, 4. indices
+# Full workflow for one scene  
 process_scene <- function(path, water_mask, lon, lat, L = 350) {
-  r      <- rast(path)
-  box    <- make_tower_box(r, lon, lat, L)
-  r_box  <- crop(r, box)
-  r_wat  <- mask_to_water(r_box, water_mask)
-  compute_ps_indices_water(r_wat)
+  r      <- rast(path)                            # 1. read
+  box    <- make_tower_box(r, lon, lat, L)        # 2. bounding box
+  r_box  <- crop(r, box)                          # 3. crop
+  r_wat  <- mask_to_water(r_box, water_mask)      # 4. water mask
+  compute_ps_indices_water(r_wat) library(shiny)  # 5. indices
+  library(bslib)
+  
+  ui <- page_fluid(
+    
+  )
+  
+  server <- function(input, output, session) {
+  
+  }
+  
+  shinyApp(ui, server)
 }
 
 # Save the PNG of the indices side by side

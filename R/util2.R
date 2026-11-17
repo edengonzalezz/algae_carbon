@@ -1,6 +1,6 @@
-source("R/util.R")
+#  Function to apply all spectral algorithms (oc3, ndci, re10) on a singular raster
 
-# Create a function to apply spectral algorithms (oc3, ndci, re10) 
+source("R/util.R")
 
 compute_ps_indices_water <- function(
     ps_image,
@@ -35,13 +35,12 @@ compute_ps_indices_water <- function(
   valid <- nir_clean & valid_base
   
   
-  # Turn into logical 0/1 spatraster so mask() behaves consistently
-
+  # Turn into logical 0/1 spatraster
   valid_water <- ifel(valid, 1, 0)
   
   
   # calculate ndci
-  
+
   # ndci = (re - red) / (re + red)
   denom_ndci <- re + red
   denom_ndci <- ifel(denom_ndci < min_reflectance, NA, denom_ndci)
