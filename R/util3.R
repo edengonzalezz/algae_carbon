@@ -26,7 +26,7 @@ mask_to_water <- function(r_box, water_mask) {
   mask(r_box, wm, maskvalues = 0)
 }
 
-# Rename Planet tifs i.e. 20250701_191421_... -> 2025-07-01
+# Rename Planet tifs, 20250701_191421_... -> 2025-07-01
 scene_date <- function(path) {
   d <- substr(basename(path), 1, 8)
   format(as.Date(d, "%Y%m%d"), "%Y-%m-%d")
